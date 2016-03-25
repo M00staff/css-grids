@@ -6,7 +6,6 @@
 * Review float, clearfix and other CSS properties.
 * Build a grid from scratch.
 * Use nested columns in a grid.
-* Examine how grids are utilized in a front-end framework (e.g., Bootstrap).
 
 ## Opening Exercise (10 / 10)
 
@@ -19,13 +18,15 @@ Whiteboard a wireframe for [Craigslist](http://washingtondc.craigslist.org/).
 ## Why use a CSS grid? (5 / 20)
 
 ### Structure
-* A simple way to apply layout to a webpage. Not only makes our lives as developers easier, but also benefits the user through design.
-* Avoid stressful CSS debugging by starting out on the right foot.
+* Grids are a simple way to apply layout to a webpage. A better layout improves the user experience.
+* Grids help avoid stressful CSS debugging by starting out on the right foot.
 
 ### Reusability
 * Grids make the layout process easier because of resusable, semantically-named "utility classes" (i.e., a library of CSS class selectors).
 * Grids aren't limited to a particular project. We can apply them to pretty much everything we do.
 * Grids are highly customizable. You can really make them your own.
+
+_Even if you don't use a grid system, these concepts will translate across other layout problems._
 
 ## Basic components of a grid (5 / 25)
 
@@ -39,7 +40,7 @@ Whiteboard a wireframe for [Craigslist](http://washingtondc.craigslist.org/).
 ### Gutters
 * Provides spacing between our columns. Optional, but useful.
 
-## Let's build a grid
+## Let's build a grid - I do/you do (10 / 35)
 
 You don't need a fancy-schmancy front-end framework to reap the benefits of a CSS grid. Let's start building one from scratch.
 
@@ -82,13 +83,31 @@ Let's start by creating `.column` and `.row` class selectors.
   border: 2px solid tomato;
 }
 ```
+* Take a minute or two to create some rows and columns in `index.html` using the class selectors we just made.
+
+```html
+<body>
+  <div class="row">
+    <div class="column">Something</div>
+    <div class="column">Something</div>
+    <div class="column">Something</div>
+  </div>
+  <div class="row">
+    <div class="column">Something</div>
+    <div class="column">Something</div>
+    <div class="column">Something</div>
+  </div>
+</body>
+```
 
 Before we start defining widths and giving our grid system some versatility, we need to take care of a few things...
 
-### Box-Sizing (5 / 30)
+### Box-Sizing (5 / 40)
 
 **Q:** By default, what is `width` defined as?
 * width = content
+
+[Illustration of the Problem](http://codepen.io/crosset/pen/JXNgzP?editors=1100)
 
 We want to be able to explicitly define our column widths so that they also include `border` and `padding`.
 * `width` = `content` + `padding` + `border`
@@ -107,7 +126,7 @@ We want to be able to explicitly define our column widths so that they also incl
 [Strangely enough](https://en.wikipedia.org/wiki/Internet_Explorer_box_model_bug), something that Internet Explorer actually got right was `box-sizing`.
 * IE6, released back in 2006, had `box-sizing` set to `border-box` by default.
 
-### Clearfix (10 / 40)
+### Clearfix (10 / 50)
 
 Our grid relies on being able to float columns. These columns will most likely contain content of various sizes.
 * We need to make sure each piece of content is constrained to its respective row and column containers
@@ -138,7 +157,7 @@ Easy, right? But like I said, if we want to help out our IE friends, implementin
 }
 ```
 
-### Define Column Behavior (15 / 55)
+### Define Column Behavior (10 / 60)
 
 So our rows are actually good to go!
 * They're just horizontal containers.
@@ -152,41 +171,26 @@ So our rows are actually good to go!
 ```
 
 Let's give our rows and columns a spin.
-* Take a minute or two to create some rows and columns in `index.html` using the class selectors we just made.
-* What functionality do we currently have? What do we need to add?
 
-```html
-<body>
-  <div class="row">
-    <div class="column">Something</div>
-    <div class="column">Something</div>
-    <div class="column">Something</div>
-  </div>
-  <div class="row">
-    <div class="column">Something</div>
-    <div class="column">Something</div>
-    <div class="column">Something</div>
-  </div>
-</body>
-```
 
 What does this look like?
+* What functionality do we currently have? What do we need to add?
 
 !["just rows columns"](img/just-rows-columns.png)
 
 Right now, we can...
 * **Separate content into rows and columns.**
   * What does it look like when we turn `float` off?
-  * How about `overflow`?
+  * How about without clearfix?
 
 We need to...
 * **Set column widths.** We don't necessarily want our column widths to be defined by their content.
 * **Define total width.** In any scenario, we want our total grid width to cover the entire page.
 * **Give everything some space.** Our grid will look better if we give our rows and columns some breathing room.
 
-### BREAK (10 / 65)
+### BREAK (10 / 70)
 
-### Create Columns with Specific Widths (15 / 80)
+### Create Columns with Specific Widths (15 / 85)
 
 So we want to define our column widths not by the width of their content but how much of the page we want them to take up.
 * Ex. a sidebar nav that takes up 1/6 of total page width.
@@ -211,7 +215,7 @@ Most grids have a column size of 12.
   percentage = (n / 12) * 100
 */
 
-.column-1 { width: 8.333%; }
+.column-1 { width: 8.33%; }
 .column-2 { width: 16.66%; }
 .column-3 { width: 25%; }
 .column-4 { width: 33.33%; }
@@ -302,7 +306,7 @@ Let's take another look at our `index.html` in the browser.
 * You can see our website has some form now.
 * Our sections could use some space though...
 
-### Gutters (15 / 95)
+### Gutters (15 / 100)
 
 **Q:** How should we go about putting space between the sections of our site?
 * What CSS properties do we have at our disposal?
@@ -407,20 +411,7 @@ Now we have some space between our columns' content.
 * The whitespace is the margins generated by our module elements.
 * If we wanted, we could go in and give each of our modules custom margins. Potential for customization is high here.
 
-### Responsive Grid (5 / 105)
-
-We can make our columns responsive using a simple media query:
-
-```css
-@media only screen and (max-width: 480px) {
-	.column {
-    margin: 1% 0 1% 0%;
-    width: 100%;
-  }
-}
-```
-
-### Nested Columns (10 / 105)
+### Nested Columns (10 / 110)
 
 Last thing about grids I want to talk about are nested columns...
 
@@ -464,7 +455,9 @@ Let's see how that changed our page...
 
 Here's a [codepen with the final version of our grid system](http://codepen.io/adambray/pen/xZqZeM?editors=110)
 
-## Exercise: Match That Grid (15 / 120)
+## BREAK (10 / 120)
+
+## Exercise: Match That Grid (15 / 135)
 
 Use what we have learned in class to recreate the grid structure for [Craigslist](http://washingtondc.craigslist.org/).
 * Start out by copying our in-class files into an exercise folder.
@@ -485,41 +478,39 @@ Notes
 * Replace the column class selector syntax (e.g., `.column-6`) with your own!
 * Add some content to your columns. Keep it simple - we don't expect you to recreate the site.
 
-## Break (10 / 130)
+## Browser Styles (10 / 145)
 
-## Front-End Frameworks (10 / 140)
+Browsers have default styles for different elements. For example `<body>` tags often have a default margin of ~8px. A `div` element in Chrome will has a height of 18px, in Firefox it's 19.2px. While this difference may be small it does vary. We often start our CSS by overriding, or reseting, some of these default properties:
 
-You don't always have to build a grid from the ground up.
+```css
+body {
+  margin: 0;
+}
+```
+We can override or work with these default styles on an ad-hoc bassis, simple changing things when they seem appropriate.
 
-**Q:** What is a CSS front-end framework?
-* Like a library, in that it gives us a toolkit that we can use to streamline the front-end development process.
-* But it's a framework, so that means we need to follow a certain structure and name things a certain way.
-  * If you use Bootstrap but don't follow their protocol, Bootstrap styling won't work.
+#### Reset
 
-There are tons of front-end frameworks out there -- like Bootstrap, Foundation, Material Design -- that incorporate grid systems.
-* They're not necessarily better. In fact, if you're only looking to implement a grid system and not any additional styling, you might be better off building a grid from scratch.
-* Nevertheless, you will encounter these frameworks in the wild so let's get some experience with them.
+An alternative is to use a [CSS Reset](http://meyerweb.com/eric/tools/css/reset/).
+To use the reset we can save this into it's own CSS file and link it in our head, or we can copy it into the top of our current CSS file.
 
-## Bootstrap
+- _**Reset removes all built-in styling, essentially provides a blank canvas**_
 
-[Bootstrap's got grids](http://getbootstrap.com/css/#grid).
+#### Normalize
 
-!["bootstrap grid table"](img/bootstrap-grid-table.png)
+Another approach instead of unstyling all of the default properties is to try to work with them. [Normalize CSS](https://necolas.github.io/normalize.css/) seeks to make syles consistent across browsers. Normalize is often linked as file in the project directory, or from a CDN link.
 
-Bootstrap uses a similar class selector syntax for columns as what we used in our from-scratch example.
-* `col-md-6`
-* Begins with `col-` and ends with `-6`, the width of that column.
-* Bootstrap also helps out with responsive design and allows us to set multiple column widths depending on the user's device.
-  * In this example, `md` stands for "medium" and covers most laptops and desktops.
-  * Don't worry about the other sizes for now. You'll learn about Responsive Web Design later this week.
+```html
+<link rel="stylesheet" href="normalize.css">
+/* VS. */
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.css">
+```
 
-### Exercise: Implement Bootstrap (10 / 150)
+- _**Normalize provides a cross-browser starting point with some properties**_
 
-Let's implement the [Craigslist grid](http://washingtondc.craigslist.org/) you created in the last exercise using Bootstrap
-* In your exercise `index.html` file, link to the Bootstrap stylesheet [using a CDN](http://getbootstrap.com/getting-started/).
-* You can keep using `style.css` too.
-* Implement the same grid from the last exercise using Bootstrap row and column class selectors. Again, not every `<div>` needs to a row or column.
-* If you finish early, feel free to experiment with responsive column widths and/or add some additional styling to your page.
+## Exit Ticket (3 min)
+
+Before you leave, plase take ~3 minutes to complete [this exit ticket.](https://docs.google.com/forms/d/1d03NYFphG6m7yAMUY1OlnJZMQWof7Rt6b5MX3Xn4ZPs/viewform)
 
 ## Additional Reading
 
